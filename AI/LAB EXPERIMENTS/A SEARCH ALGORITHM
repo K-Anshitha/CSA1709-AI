@@ -1,0 +1,51 @@
+# A* Search Algorithm
+
+graph = {
+    'A': [('B', 1), ('C', 3)],
+    'B': [('D', 1), ('E', 5)],
+    'C': [('F', 2)],
+    'D': [],
+    'E': [('G', 2)],
+    'F': [('G', 1)],
+    'G': []
+}
+
+h = {
+    'A': 4,
+    'B': 3,
+    'C': 2,
+    'D': 2,
+    'E': 1,
+    'F': 1,
+    'G': 0
+}
+
+def a_star(start, goal):
+    open_list = [(h[start], 0, start, [start])]
+    visited = set()
+
+    while open_list:
+        open_list.sort()
+        f, g, node, path = open_list.pop(0)
+
+        if node == goal:
+            print("Shortest Path:", path)
+            print("Total Cost:", g)
+            return
+
+        if node in visited:
+            continue
+
+        visited.add(node)
+
+        for neighbor, cost in graph[node]:
+            if neighbor not in visited:
+                new_g = g + cost
+                new_f = new_g + h[neighbor]
+                open_list.append(
+                    (new_f, new_g, neighbor, path + [neighbor])
+                )
+
+    print("No path found")
+
+a_star('A', 'G')
